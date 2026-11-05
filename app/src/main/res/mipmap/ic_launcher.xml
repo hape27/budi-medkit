@@ -4,6 +4,6 @@
     <item>
         <inset
             android:drawable="@drawable/budi_jaya_motor_logo"
-            android:inset="8dp" />
+            android:inset="0dp" />
     </item>
 </layer-list>
