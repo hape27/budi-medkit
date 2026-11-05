@@ -384,7 +384,7 @@ function handlePin(){
  const input=pinEl('pinInput'),confirmInput=pinEl('pinConfirm'),error=pinEl('pinError'),screen=pinEl('lockScreen');
  const p=input.value,stored=localStorage.getItem('bm_owner_pin');
  if(pinMode==='setup'||pinMode==='change'){
-  if(!/^\\d{4,6}$/.test(p)){error.textContent='PIN harus 4–6 angka.';return}
+  if(!/^\d{4,6}$/.test(p)){error.textContent='PIN harus 4–6 angka.';return}
   if(p!==confirmInput.value){error.textContent='Konfirmasi PIN tidak sama.';return}
   try{localStorage.setItem('bm_owner_pin',p)}catch(e){error.textContent='PIN tidak dapat disimpan. Periksa ruang penyimpanan perangkat.';return}
   error.textContent='';screen.style.display='none';return
