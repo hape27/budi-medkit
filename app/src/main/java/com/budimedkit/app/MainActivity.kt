@@ -1,6 +1,9 @@
 package com.budimedkit.app
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.text.InputType
+import android.widget.EditText
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -28,6 +31,42 @@ class MainActivity : Activity() {
         web.addJavascriptInterface(PrintBridge(), "AndroidPrint")
         web.webViewClient = WebViewClient()
         web.webChromeClient = object : WebChromeClient() {
+            override fun onJsPrompt(view: WebView?, url: String?, message: String?, defaultValue: String?, result: android.webkit.JsPromptResult?): Boolean {
+                val input = EditText(this@MainActivity).apply {
+                    setText(defaultValue.orEmpty())
+                    inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+                    hint = message.orEmpty()
+                    setSelection(text.length)
+                }
+                AlertDialog.Builder(this@MainActivity)
+                    .setTitle("Ubah kategori")
+                    .setView(input)
+                    .setPositiveButton("Simpan") { _, _ -> result?.confirm(input.text.toString()) }
+                    .setNegativeButton("Batal") { _, _ -> result?.cancel() }
+                    .setOnCancelListener { result?.cancel() }
+                    .show()
+                return true
+            }
+
+            override fun onJsAlert(view: WebView?, url: String?, message: String?, result: android.webkit.JsResult?): Boolean {
+                AlertDialog.Builder(this@MainActivity)
+                    .setMessage(message.orEmpty())
+                    .setPositiveButton("OK") { _, _ -> result?.confirm() }
+                    .setOnCancelListener { result?.cancel() }
+                    .show()
+                return true
+            }
+
+            override fun onJsConfirm(view: WebView?, url: String?, message: String?, result: android.webkit.JsResult?): Boolean {
+                AlertDialog.Builder(this@MainActivity)
+                    .setMessage(message.orEmpty())
+                    .setPositiveButton("Ya") { _, _ -> result?.confirm() }
+                    .setNegativeButton("Batal") { _, _ -> result?.cancel() }
+                    .setOnCancelListener { result?.cancel() }
+                    .show()
+                return true
+            }
+
             override fun onShowFileChooser(view: WebView?, callback: ValueCallback<Array<Uri>>?, params: FileChooserParams?): Boolean {
                 fileCallback?.onReceiveValue(null)
                 fileCallback = callback
