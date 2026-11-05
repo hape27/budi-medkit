@@ -26,7 +26,7 @@ class MainActivity : Activity() {
         title.gravity = Gravity.CENTER
 
         val subtitle = TextView(this)
-        subtitle.text = "Sistem Informasi dan Layanan Kesehatan"
+        subtitle.text = "Manajemen Bengkel & Servis Kendaraan"
         subtitle.textSize = 16f
         subtitle.setTextColor(Color.DKGRAY)
         subtitle.gravity = Gravity.CENTER
