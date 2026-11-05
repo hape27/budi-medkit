@@ -90,6 +90,7 @@ class MainActivity : Activity() {
                     val manager = getSystemService(PRINT_SERVICE) as PrintManager
                     manager.print("Nota Budi Jaya Motor", web.createPrintDocumentAdapter("Nota-Budi-Jaya-Motor"),
                         PrintAttributes.Builder().setMediaSize(PrintAttributes.MediaSize.ISO_A5)
+                            .setColorMode(PrintAttributes.COLOR_MODE_COLOR)
                             .setMinMargins(PrintAttributes.Margins.NO_MARGINS).build())
                 } catch (e: Exception) {
                     Toast.makeText(this@MainActivity, "Tidak dapat membuka layanan cetak: ${e.message}", Toast.LENGTH_LONG).show()
