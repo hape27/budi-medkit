@@ -6,125 +6,22 @@
 <style>
 :root{--navy:#10243a;--blue:#1769aa;--bg:#f3f6fa;--muted:#718096;--line:#e4eaf1;--green:#168653;--red:#d34c4c}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);font:14px/1.5 Inter,system-ui,Arial;color:#182638}.app{display:flex;min-height:100vh}.side{width:245px;background:var(--navy);color:#fff;padding:22px 15px;flex-shrink:0}.brand{display:flex;align-items:center;gap:10px;padding:4px 8px 24px}.brand img{width:43px;height:43px;object-fit:contain;background:#fff;border-radius:10px}.brand b{display:block;font-size:16px;letter-spacing:.5px}.brand small{color:#b7c7d8}.nav button{display:flex;width:100%;border:0;background:transparent;color:#d4dfeb;text-align:left;padding:12px;border-radius:9px;margin:3px 0;font:inherit;cursor:pointer}.nav button.active,.nav button:hover{background:#24415f;color:white}.nav span{width:25px}.main{flex:1;min-width:0}.top{height:66px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px}.top strong{font-size:16px}.top small{color:var(--muted)}.content{padding:26px;max-width:1200px;margin:auto}.page{display:none}.page.active{display:block}h1{font-size:24px;margin:0 0 5px}h2{font-size:17px;margin:0 0 15px}.sub{color:var(--muted);margin:0 0 22px}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:18px 0}.card,.panel{background:#fff;border:1px solid var(--line);border-radius:13px;padding:18px}.metric small{color:var(--muted)}.metric strong{display:block;font-size:24px;margin-top:8px}.green{color:var(--green)}.red{color:var(--red)}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:15px}.btn{border:0;background:var(--blue);color:#fff;padding:10px 14px;border-radius:8px;font-weight:600;cursor:pointer}.btn.secondary{background:#eaf1f8;color:#24415f}.btn.danger{background:#fff0f0;color:var(--red)}input,select,textarea{font:inherit;border:1px solid #d7e0e9;border-radius:8px;padding:10px;background:#fff;width:100%;color:#182638}label{display:block;font-weight:600;font-size:12px;color:#536477;margin:10px 0 5px}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 13px}.full{grid-column:1/-1}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:600px}th,td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);white-space:nowrap}th{font-size:12px;color:var(--muted);background:#fafbfd}td.amount{text-align:right;font-weight:600}.pill{padding:4px 8px;border-radius:20px;font-size:11px;background:#edf7f1;color:var(--green)}.pill.out{background:#fff0f0;color:var(--red)}.barlist{display:grid;gap:12px}.barrow{display:grid;grid-template-columns:65px 1fr 110px;gap:10px;align-items:center;font-size:12px}.track{height:12px;border-radius:10px;background:#edf1f5;overflow:hidden}.fill{height:100%;background:#2586c7;border-radius:10px}.twocol{display:grid;grid-template-columns:1fr 1fr;gap:15px}.notice{padding:12px;background:#fff8e8;border-radius:9px;color:#8a6420;font-size:12px;margin:12px 0}.receipt{max-width:560px;margin:auto;border:1px dashed #b8c3cf;padding:24px;background:#fff}.receipt img{width:65px;height:65px;object-fit:contain;display:block;margin:0 auto 8px}.receipt h2{text-align:center;margin:0}.receipt p{text-align:center;color:#657386;font-size:12px;margin:3px}.receipt table{min-width:0}.receipt td,.receipt th{padding:8px 4px}.right{text-align:right}.hide{display:none!important}.mobilehead{display:none}
-#lockScreen{position:fixed;inset:0;background:radial-gradient(ellipse at 15% 15%,#2378a8 0,transparent 38%),radial-gradient(ellipse at 90% 85%,#173f68 0,transparent 42%),linear-gradient(145deg,#071727,#102b45 55%,#0b1d31);z-index:9999;display:flex;align-items:center;justify-content:center;padding:22px;overflow:auto}
-#lockScreen:before,#lockScreen:after{content:"";position:absolute;border:1px solid #ffffff12;border-radius:50%;pointer-events:none}
-#lockScreen:before{width:430px;height:430px;right:-180px;top:-210px}
-#lockScreen:after{width:330px;height:330px;left:-170px;bottom:-180px}
-.lockbox{position:relative;width:min(100%,390px);background:linear-gradient(155deg,#ffffff 0%,#f4f8fc 100%);border:1px solid #ffffffa8;border-radius:26px;padding:30px 28px 25px;box-shadow:0 28px 80px #020b18a6;text-align:center}
-.lock-logo{width:112px;height:112px;object-fit:contain;padding:9px;background:#fff;border:1px solid #e7edf4;border-radius:25px;box-shadow:0 9px 25px #10243a18;display:block;margin:0 auto 17px}
-.lock-kicker{font-size:10px;letter-spacing:2.2px;font-weight:800;color:#718096;margin:0 0 5px!important}
-.lockbox h2{font-size:25px;letter-spacing:1.1px;margin:0;color:#10243a}
-.lockbox .lock-subtitle{color:#52708b;font-size:12px;font-weight:600;margin:5px 0 18px}
-.lockbox .lock-divider{height:1px;background:linear-gradient(90deg,transparent,#dce5ee,transparent);margin:0 0 17px}
-.lockbox .lock-instruction{color:#66788b;font-size:13px;line-height:1.55;margin:0 0 12px}
-.lockbox input{margin:6px 0 9px;text-align:center;font-size:23px;letter-spacing:10px;height:54px;border:1px solid #d7e2ed;border-radius:13px;background:#f8fbfe;box-shadow:inset 0 1px 2px #10243a08}
-.lockbox input:focus{outline:0;border-color:#2586c7;box-shadow:0 0 0 3px #2586c71c}
-#pinAction{height:49px;border-radius:13px;background:linear-gradient(100deg,#1769aa,#2586c7);box-shadow:0 8px 18px #1769aa35;font-size:14px;letter-spacing:.2px}
-#pinError{font-size:12px;font-weight:600;min-height:18px}
-.lock-foot{display:block;color:#93a2b2;font-size:10px;margin-top:14px;letter-spacing:.3px}
-@media(max-width:420px){.lockbox{padding:25px 20px 22px;border-radius:22px}.lock-logo{width:98px;height:98px}}
-
+#lockScreen{position:fixed;inset:0;background:#071727;z-index:9999;overflow:hidden;padding:0;display:block}
+#loginArtwork{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;display:block}
+.loginOverlay{position:absolute;inset:0}
+#lockMessage{position:absolute;left:-9999px}
+#pinInput{position:absolute;left:8%;top:71.45%;width:84%;height:4.9%;margin:0;padding:0 14px;border:0!important;border-radius:48px;background:transparent!important;box-shadow:none!important;color:#fff!important;text-align:center;font-size:25px;letter-spacing:17px;outline:none}
+#pinInput::placeholder{color:transparent}
+#pinInput:focus{outline:none;border:0!important;box-shadow:none!important}
+#pinConfirm{display:none!important}
+#pinAction{position:absolute;left:7.6%;top:77.45%;width:84.8%;height:5.45%;margin:0!important;padding:0;border:0!important;border-radius:48px;background:transparent!important;box-shadow:none!important;color:transparent!important;font-size:1px}
+#resetPinAction{position:absolute;left:7.6%;top:83.55%;width:84.8%;height:4.9%;margin:0!important;padding:0;border:0!important;border-radius:48px;background:transparent!important;box-shadow:none!important;color:transparent!important;font-size:1px}
+#pinError{position:absolute;top:89.2%;left:8%;width:84%;text-align:center;color:#ffb4b4!important;text-shadow:0 1px 3px #000;font-size:12px}
+.lock-foot{display:none}
 @media(max-width:760px){.app{display:block}.side{position:fixed;z-index:1002;left:0;top:0;bottom:0;width:270px;max-width:82vw;padding:18px 15px;overflow-y:auto;transform:translateX(-105%);transition:transform .22s ease;box-shadow:12px 0 35px #07172755}.side.mobile-open{transform:translateX(0)}.brand{padding:4px 8px 22px}.brand img{width:43px;height:43px}.nav{display:flex;flex-direction:column;gap:3px;overflow:visible}.nav button{white-space:normal;width:100%;padding:12px;font-size:14px}.nav span{display:inline-block}.menu-backdrop{display:none;position:fixed;inset:0;background:#07172788;z-index:1001}.menu-backdrop.show{display:block}.top{height:58px;padding:0 15px;justify-content:flex-start;gap:12px}.menu-toggle{display:inline-flex!important;align-items:center;justify-content:center;width:38px;height:38px;border:0;border-radius:9px;background:#eaf1f8;color:#173b5b;font-size:21px;cursor:pointer}.content{padding:18px 13px}.cards{grid-template-columns:1fr 1fr}.cards .metric:last-child{grid-column:1/-1}.twocol{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr}.full{grid-column:auto}.metric strong{font-size:20px}}
 @media print{*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}body{background:#fff!important}.side,.top,.no-print{display:none!important}.content{padding:0}.page{display:none!important}#nota.page.active{display:block!important}.receipt{border:0;background:#fff!important;color:#182638!important}.receipt img{display:block!important;visibility:visible!important;opacity:1!important;filter:none!important;-webkit-filter:none!important;mix-blend-mode:normal!important;object-fit:contain!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}}
 </style></head>
-<body><div id="lockScreen"><div class="lockbox"><img class="lock-logo" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABUOEBIQDRUSERIYFhUZHzQiHx0d
-H0AuMCY0TENQT0tDSUhUXnlmVFlyWkhJaY9qcnyAh4iHUWWUn5ODnXmEh4L/
-2wBDARYYGB8cHz4iIj6CVklWgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKC
-goKCgoKCgoKCgoKCgoKCgoKCgoKCgoL/wgARCACWAPADASIAAhEBAxEB/8QA
-GQAAAgMBAAAAAAAAAAAAAAAAAAECAwQF/8QAGAEBAQEBAQAAAAAAAAAAAAAA
-AAECAwT/2gAMAwEAAhADEAAAAec07GAMCxtMGmDTBpgT1y4TVTOlRIWCsTME
-1cIBEAqAE0waYNOxikBJyxJDRbTHHXS8quNb58rnbHJazNV0tXumE3ohKAIV
-yxplNFjAWU28dYylBoc3nrWUlxc6ds1mhoz9PPZKcOfpt30aenjq5XYxWYZT
-6JQrK4rzzzU0wTVksraa89ttuaeuM7scwnTnx6NZjLN08M89IiOnm35oPHbt
-U14t+bqnH2GqGPnnWnmiUVooBCUr5aFoJqu4VxVKYVIc6pshKY0gEjctVxXl
-25NYpvrgFitHXfVFQ1SAIxmRAmEDvZ15L3WpzDpROeaNRzTs5znPoaDjqzqV
-x7OpXGA32VzKuoRypdSJzwKEAAQJyrdCmmXdXkSbFlZdp58zXXCk1WZayWzP
-WajHYXRhSabcKNbyA1KNAKBoGgNcsQbVjDZbzmXzyo3wxs2xyBsWRGizIq3P
-BKNkMgbVjBiAAAAABiBiYAUADEDEAAAAAQAAIAAABMAAAAAAYAAAFAEAAACA
-AAAAAEAf/8QALBAAAgICAQMEAAQHAAAAAAAAAQIAAxESEwQQISAiMDEUIzNB
-JDI0QEJQYP/aAAgBAQABBQL/AFiqTODwUAh1mVmVmJj+1AgwIbtZ+dZOATXp
-hM9LP4Wa0TRptieDMfNqZqZrMGe+HeBgsayxprmaGBCTwPDSwGJ5n76vjLCb
-ibCDYw+kCYHb3zWaiaiaCaCaCEdk7dN5aGMMGKhcgBRmMQBzQszenM1i5M0s
-mhgGIfA5GnK05TMR/CmAe1/C9OuKsTE6hJWhc6gAiYl0x6eMmBQsrUPNi8O6
-hStyK0OhGtU1qgFYhdRC25/y2WWHYjAF76VI6sjakDRQ9iKKn2XKy05s9Ctg
-bGGMfHgHKvC35lv6pbzuZuYrZ7j7lX6u06hsyh8HaPZrCSx+hn1DsZ+wAUeM
-D7J93ieJ47Z75lfhcw+WPiGzx9xf5sxvr0fc41nGk40mAJrAsI8atNWmrTVp
-o00ImrTVotRM1hHjUwzHasTEZT8GO+JiYmJiYmJiYmPSZj4mDb1hfxXS/rVn
-WnK312f06Wcc6kZZlUpXi6u3GbFVkl6A1hAnTZFFeRbSlu1KEFa7BeasrRaM
-0/A70u34gfiA9NZqdOI2VojurUpxEc1ZuXqjujInU1ui2p1XvfGTeBZzAqLK
-3rexBWjqKKbAoD01RLdaLbFtT1gAkVpCAJiYmO6LsWQAYjrqZp7WQqcRE3LI
-AJjviHwfXuK2RwRziC5cC5cM6IHcNK87GxVi3CcyzmXHMmeVNXcFq8w2qDW+
-85kDC1dedduVR8v1Dkn4wxH/AEf/xAAkEQACAgEDBAIDAAAAAAAAAAAAAQIR
-EgMQIRMgIjEwYUFRYP/aAAgBAwEBPwHvoWmzpfY9OS+HFmDEoR9jnZy9lJo6
-n7KgzH7KW1Cgl7El+ClRnpkcJGokpcC8Y96VlJcjd7KSx5L0xVXAvKRqcLvT
-oy3VUeJkJxRJ3/Jf/8QAHhEAAgEEAwEAAAAAAAAAAAAAABEBEBIgIQIwQWD/
-2gAIAQIBAT8BzZcXF0dLGOZFVCNjwdVJs4nvZunhHQsN1j5L/8QALxAAAQMC
-BAQFBAIDAAAAAAAAAQACESExEBIiQQMgMFEyQmGRoRMjQIFQcWCx0f/aAAgB
-AQAGPwL+MoqnDZbfk98KUC+5xFeVZbrTxSFpe1y1NI/Athstlsuy0tr3Kq44
-wLrwqSML4aTmCqDjRqvzXVGe6vCqZVlZWVuYuxjGBhJCo0BVPL3WorQ1X9l4
-jhKsrK3MPXHMvRQMQOauGd/gC+3DWhZswcuzlDrhQeX0QwDQoRIug5QVAUkr
-M7fA9BrdlmH7CFdITSP6U9x0Z7YALLjJUdunNyrWVrdKe/LXo1xoqGF4vZaV
-b5VvlW+Vb5W3vhb5VlqMY25CcKfw4ysbl3TwBSF+k90AwU45QHN7LhI0B/tM
-gXCPCHiaJX0/MLJvBYnMbdmAIuAnT4olNIaC5yPEygOanvyNkJ3Gc0UsFke0
-ekJ0NzODkHubldPRDi51OyzxSIRcwklOY8mpRbwprclMaLhfcJBQds0UWprY
-Wbypzz+lqa0DeEctk0ioywVxc13WQZxZEWK+nwt7lPYblFjxpKlkucnCdcpp
-846FTCn6mkeivzRMKQTQxhHvgO5soOF4QInmvPQDdm/7Ts21VYz3VZleYlDT
-dCnuswYhOo9+y1AmqqCao0NV4SogqiJy33ldzHiQbBlUB/6hQ0U5StyetJ6l
-D/kf/8QAKhABAAICAQMDBAICAwAAAAAAAQARITFRQWFxEIGRIDCh8LHB0fFA
-UGD/2gAIAQEAAT8h/wCsRoXDYBOt3EOvynfizqfMo6jKJv8A4iMG4gMD4IdP
-3mU5/LOr+SfsuKug+Yt+RlHxt5inUnjYvpETf0V9gzO6ni+Zbn5SjV/LF4r3
-iRkp2mlHyfQUNcztSl1x+5jaiHf0iSrVxANrPEMo+1uOrp+lTsT+xVLdbePp
-R0Q62nEF/ujPp8IK8sfufXL9zKNCe8rzuVBhYw9ixGURHTLddPSgGDq8SjuP
-59Ksj7RUzYDD1MyhotNL9jpNG850S7YI5I1qtfMd/CdpOwhbkej8yLErBMyf
-JnqYA9MMwrA2wo6g9FnE5c/SMtENpRxP80y9StBzM05A/wCIcNL1VRzTVz0m
-7G1MzRieaeaN2bgS3+I9uhohSDq53/xCS7ZSBwFQUnAgodkT2wxBwhPhY5ll
-gtg4I8kCtox9OgM8xbrHjzBqeUvITHZqYh7HlglPyriIoO5HKBO0TtEyLJcM
-TqRZn7j0fksunpyRgBy9CbkMEM9FRrmGc/Q+i4sRzc6ZgZNui4CxAr5mQxNm
-pZ4ErulcWVxfmYNFRpCgzuLxGPeHodjMlkwU2zKvaDDtmML5fSDgFwoMr65n
-k+Z5PmECn8R1Kdn2Sqg/MP8AQT9In6RP0iW8I6At5sn6RP1pH7AeZTRVEpVZ
-ZXtQQ9Fh7EpzGJSyImz6GVK9FSvugAEH0C30B9mipWzPAEJKtUHKZ+nVIIxa
-7gl1FsfFfiogOgh2lK3MuVRnXMwAY28sCsrHzHUIspXXEpMWs7RLhrt6RuAe
-a0xVeglTorgNRCVZl0SylQVVyrHGo+wwYJHRHALc5jZOYHpBgmbBAOTIUTlh
-QWTCRQLxsNsqUS2hmUiu9YlpfVNbjbY2GZul2xLa8Yhmo0pcgasR2JsdY6mf
-GItp4+kuXUUX0lIsVyIBTAnT7FaE8scObYxrLe0uNJmPoBEg3hD3lAb8R7JS
-dVexlQu90+HaUIzGnSHS/wBzELVtUmZUYqVBcY1DYUp1PrY0rYb/AJR2CmSY
-dnQ+ZUByLe64hKJkW8vSXCsMHAa/MdQsGY0BpqnTFhgjhkUGZDKouv8Agkwm
-s35nZN/xqFjdM+eYWRYAZ6wFKtKMARNWOlIPIOeIodVl/CGButXaUAdC74/3
-ARyG+Fl/Zzq9ypULQmyK0W+lSpUqVKleiSoGlV7lSpUr/wA//9oADAMBAAIA
-AwAAABD4JWGiqh6CBN6uqqqLFlNjK6juTV7TuZQN3v6NB/qww/VDPWlCbBbQ
-LcedOaQMf/cyNT85ASFuDgMsyM9/+cGP1O/h1P0hev8AbDPDnfnVnvPzn/Pr
-TnJbjDv/AE/z28fTTffY4z/44w//AOMMEMMP/wD/AA//AP/EACERAQACAgED
-BQAAAAAAAAAAAAEAESExECBAQTBQUWHx/9oACAEDAQE/EOsTF5cS/gTw0RN+
-gJogrkglhWNpiVmrjQML4Nx0MSvwiHngtMnLPxA7JPoi0ErEVi5b6r1QLCK2
-CjZGW4hdpDSxlJ12Li0rlYnjSqJpJb7Guwv3H//EAB4RAAMAAgMAAwAAAAAA
-AAAAAAABERAhIDAxQVBx/9oACAEDAgE/EOsTF5cS/gTw0RN+gJogrkglhWNp
-iVmrjQML4Nx0MSvwiHngtMnLPxA7JPoi0ErEVi5b6r1QLCK2CjZGW4hdpDSx
-lJ12Li0rlYnjSqJpJb7Guwv3H//EAB4RAAMAAgMAAwAAAAAAAAAAAAABERAh
-IDAxQVBx/9oACAEDAQE/EOsTF5cS/gTw0RN+gJogrkglhWNpiVmrjQML4Nx0
-MSvwiHngtMnLPxA7JPoi0ErEVi5b6r1QLCK2CjZGW4hdpDSxlJ12Li0rlYnj
-SqJpJb7Guwv3H//EAB4RAAMAAgMAAwAAAAAAAAAAAAABERAhIDAxEB/8QAKh
-ABAAICAQMDBAICAwAAAAAAAQARITFRQWFxEIGRIDCh8LHB0fFAUGD/2gAIAQ
-EAAT8h/wCsRoXDYBOt3EOvynfizqfMo6jKJv8A4iMG4gMD4IdP3mU5/LOr+S
-fsuKug+Yt+RlHxt5inUnjYvpETf0V9gzO6ni+Zbn5SjV/LF4r3iRkp2mlHyf
-QUNcztSl1x+5jaiHf0iSrVxANrPEMo+1uOrp+lTsT+xVLdbePpR0Q62nEF/u
-jPp8IK8sfufXL9zKNCe8rzuVBhYw9ixGURHTLddPSgGDq8SjuP59Ksj7RUzY
-DD1MyhotNL9jpNG850S7YI5I1qtfMd/CdpOwhbkej8yLErBMyfJnqYA9MMwr
-A2wo6g9FnE5c/SMtENpRxP80y9StBzM05A/wCIcNL1VRzTVz0m7G1MzRieae
-aN2bgS3+I9uhohSDq53/xCS7ZSBwFQUnAgodkT2wxBwhPhY5llgtg4I8kCto
-x9OgM8xbrHjzBqeUvITHZqYh7HlglPyriIoO5HKBO0TtEyLJcMTqRZn7j0fk
-sunpyRgBy9CbkMEM9FRrmGc/Q+i4sRzc6ZgZNui4CxAr5mQxNmpZ4ErulcWV
-xfmYNFRpCgzuLxGPeHodjMlkwU2zKvaDDtmML5fSDgFwoMr65nk+Z5PmECn8
-R1Kdn2Sqg/MP8AQT9In6RP0iW8I6At5sn6RP1pH7AeZTRVEpVZZXtQQ9Fh7E
-pzGJSyImz6GVK9FSvugAEH0C30B9mipWzPAEJKtUHKZ+nVIIxa7gl1FsfFfi
-ogOgh2lK3MuVRnXMwAY28sCsrHzHUIspXXEpMWs7RLhrt6RuAea0xVeglTor
-gNRCVZl0SylQVVyrHGo+wwYJHRHALc5jZOYHpBgmbBAOTIUTlhQWTCRQLxsN
-sqUS2hmUiu9YlpfVNbjbY2GZul2xLa8Yhmo0pcgasR2JsdY6mfGItp4+kuXU
-UX0lIsVyIBTAnT7FaE8scObYxrLe0uNJmPoBEg3hD3lAb8R7JSdVexlQu90+
-HaUIzGnSHS/wBzELVtUmZUYqVBcY1DYUp1PrY0rYb/AJR2CmSYdnQ+ZUByLe
-64hKJkW8vSXCsMHAa/MdQsGY0BpqnTFhgjhkUGZDKouv8Agkwms35nZN/xqF
-jdM+eYWRYAZ6wFKtKMARNWOlIPIOeIodVl/CGButXaUAdC74/3ARyG+Fl/Zz
-q9ypULQmyK0W+lSpUqVKleiSoGlV7lSpUr/wA//9
-" alt="Logo asli Budi Jaya Motor"><p class="lock-kicker">BUDI JAYA MOTOR</p><h2>BUDI MEDKIT</h2><p class="lock-subtitle">Sistem Pencatatan Keuangan Bengkel</p><div class="lock-divider"></div><p class="lock-instruction" id="lockMessage">Buat PIN pemilik untuk melindungi catatan keuangan.</p><input id="pinInput" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="••••••" autocomplete="off"><input id="pinConfirm" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="Ulangi PIN" autocomplete="off" style="display:none"><button class="btn" id="pinAction" style="width:100%;margin-top:9px" onclick="handlePin()">Simpan PIN</button><button class="btn" id="resetPinAction" type="button" style="width:100%;margin-top:12px;display:none;background:#fff1e8;color:#9a3412;border:1px solid #fdba74;font-weight:800" onclick="resetPinOnly()">LUPA PIN? RESET PIN DI SINI</button><small id="pinError" style="display:block;color:#d34c4c;margin-top:10px"></small><small class="lock-foot">AKSES KHUSUS PEMILIK • DATA TERSIMPAN DI PERANGKAT</small></div></div><div class="app">
+<body><div id="lockScreen"><img id="loginArtwork" src="login-final.png" alt="BUDI MEDKIT — Budi Jaya Motor"><div class="loginOverlay"><p id="lockMessage">Masukkan PIN Anda</p><input id="pinInput" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="" autocomplete="off" aria-label="PIN pemilik"><input id="pinConfirm" type="password" inputmode="numeric" maxlength="6" autocomplete="off"><button class="btn" id="pinAction" type="button" onclick="if(pinMode==='setup'||pinMode==='change'){pinConfirm.value=prompt('Ulangi PIN untuk konfirmasi:')||''}handlePin()" aria-label="Login">LOGIN</button><button class="btn" id="resetPinAction" type="button" onclick="resetPinOnly()" aria-label="Reset PIN">RESET PIN</button><small id="pinError" aria-live="polite"></small></div></div><div class="app">
 <aside class="side"><div class="brand"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABUOEBIQDRUSERIYFhUZHzQiHx0d
 H0AuMCY0TENQT0tDSUhUXnlmVFlyWkhJaY9qcnyAh4iHUWWUn5ODnXmEh4L/
 2wBDARYYGB8cHz4iIj6CVklWgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKC
