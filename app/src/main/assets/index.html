@@ -369,13 +369,42 @@ function newReceipt(){nNumber.value=nextNo();nDate.value=today();nCustomer.value
 function renderReceiptHistory(){receiptHistory.innerHTML=receipts.map(r=>'<div style="padding:10px 0;border-bottom:1px solid #eee;display:flex;justify-content:space-between;gap:8px"><span><b>'+esc(r.no)+'</b><br><small>'+esc(r.customer||'Pelanggan')+' · '+(r.book?'Masuk pembukuan':'Cetak saja')+'</small></span><span>'+rupiah(r.total)+' <button class="btn secondary" onclick="reprint('+JSON.stringify(r.no)+')">Cetak ulang</button></span></div>').join('')||'<small>Belum ada nota.</small>'}
 function reprint(no){let r=receipts.find(x=>x.no===no);if(!r)return; nNumber.value=r.no;nDate.value=r.date;nCustomer.value=r.customer;items=r.items.map(x=>({...x}));nDiscount.value=r.discount;nMemo.value=r.memo;nBook.value=r.book?'yes':'no';renderItems();printReceipt()}
 function renderAll(){renderDashboard();renderTransactions();renderCats();renderReport();renderAnalysis();renderReceiptHistory();const info=document.getElementById("storageInfo");if(info)info.textContent=tx.length+" transaksi · "+receipts.length+" nota · "+cats.masuk.length+" kategori pemasukan · "+cats.keluar.length+" kategori pengeluaran"}
-function lockApp(){document.getElementById('lockScreen').style.display='flex';pinInput.value='';pinConfirm.value='';pinConfirm.style.display='none';lockMessage.textContent='Masukkan PIN pemilik untuk membuka aplikasi.';pinAction.textContent='Buka aplikasi';pinError.textContent='';pinMode='unlock'}
 let pinMode='';
-function handlePin(){let p=pinInput.value,stored=localStorage.getItem('bm_owner_pin');if(pinMode==='setup'){if(!/^\d{4,6}$/.test(p)){pinError.textContent='PIN harus 4–6 angka.';return}if(p!==pinConfirm.value){pinError.textContent='Konfirmasi PIN tidak sama.';return}localStorage.setItem('bm_owner_pin',p);document.getElementById('lockScreen').style.display='none';return}if(pinMode==='change'){if(!/^\d{4,6}$/.test(p)){pinError.textContent='PIN harus 4–6 angka.';return}if(p!==pinConfirm.value){pinError.textContent='Konfirmasi PIN tidak sama.';return}localStorage.setItem('bm_owner_pin',p);document.getElementById('lockScreen').style.display='none';return}if(p===stored){document.getElementById('lockScreen').style.display='none';pinError.textContent=''}else pinError.textContent='PIN salah.'}
-function changePin(){pinMode='change';lockScreen.style.display='flex';lockMessage.textContent='Masukkan PIN baru dan konfirmasikan.';pinInput.value='';pinConfirm.value='';pinConfirm.style.display='block';pinAction.textContent='Simpan PIN baru';pinError.textContent=''}
+function pinEl(id){return document.getElementById(id)}
+function initPinLock(){
+ const screen=pinEl('lockScreen'),input=pinEl('pinInput'),confirmInput=pinEl('pinConfirm'),message=pinEl('lockMessage'),action=pinEl('pinAction'),error=pinEl('pinError');
+ if(!screen||!input||!confirmInput||!message||!action||!error){console.error('Elemen pengunci PIN tidak lengkap.');return}
+ input.value='';confirmInput.value='';error.textContent='';
+ if(!localStorage.getItem('bm_owner_pin')){pinMode='setup';confirmInput.style.display='block';action.textContent='Simpan PIN';message.textContent='Buat PIN pemilik 4–6 angka, lalu ulangi PIN yang sama.'}
+ else{pinMode='unlock';confirmInput.style.display='none';action.textContent='Buka aplikasi';message.textContent='Masukkan PIN pemilik untuk membuka aplikasi.'}
+ screen.style.display='flex';
+}
+function lockApp(){const input=pinEl('pinInput'),confirmInput=pinEl('pinConfirm');pinEl('lockScreen').style.display='flex';input.value='';confirmInput.value='';confirmInput.style.display='none';pinEl('lockMessage').textContent='Masukkan PIN pemilik untuk membuka aplikasi.';pinEl('pinAction').textContent='Buka aplikasi';pinEl('pinError').textContent='';pinMode='unlock'}
+function handlePin(){
+ const input=pinEl('pinInput'),confirmInput=pinEl('pinConfirm'),error=pinEl('pinError'),screen=pinEl('lockScreen');
+ const p=input.value,stored=localStorage.getItem('bm_owner_pin');
+ if(pinMode==='setup'||pinMode==='change'){
+  if(!/^\\d{4,6}$/.test(p)){error.textContent='PIN harus 4–6 angka.';return}
+  if(p!==confirmInput.value){error.textContent='Konfirmasi PIN tidak sama.';return}
+  try{localStorage.setItem('bm_owner_pin',p)}catch(e){error.textContent='PIN tidak dapat disimpan. Periksa ruang penyimpanan perangkat.';return}
+  error.textContent='';screen.style.display='none';return
+ }
+ if(stored&&p===stored){screen.style.display='none';error.textContent='';input.value=''}
+ else{error.textContent='PIN salah. Periksa kembali PIN Anda.';input.focus()}
+}
+function changePin(){pinMode='change';pinEl('lockScreen').style.display='flex';pinEl('lockMessage').textContent='Masukkan PIN baru dan konfirmasikan.';pinEl('pinInput').value='';pinEl('pinConfirm').value='';pinEl('pinConfirm').style.display='block';pinEl('pinAction').textContent='Simpan PIN baru';pinEl('pinError').textContent=''}
 function exportBackup(){const data={app:"BUDI MEDKIT",version:1,exportedAt:new Date().toISOString(),categories:cats,transactions:tx,receipts};const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="BUDI-MEDKIT-BACKUP-"+today()+".json";a.click();URL.revokeObjectURL(url)}
 async function importBackup(){const file=document.getElementById("backupFile").files[0];if(!file)return alert("Pilih file backup terlebih dahulu.");try{const data=JSON.parse(await file.text());if(data.app!=="BUDI MEDKIT"||!data.categories||!Array.isArray(data.categories.masuk)||!Array.isArray(data.categories.keluar)||!Array.isArray(data.transactions)||!Array.isArray(data.receipts))throw new Error("Format file bukan backup BUDI MEDKIT yang valid.");if(!confirm("Pemulihan akan mengganti seluruh data lokal saat ini. Lanjutkan?"))return;cats=data.categories;tx=data.transactions;receipts=data.receipts;save();renderAll();alert("Backup berhasil dipulihkan.")}catch(e){alert("Backup tidak dapat dipulihkan: "+e.message)}}
 function clearLocalData(){if(!confirm("Yakin menghapus seluruh transaksi, kategori, dan nota dari browser ini? Buat backup terlebih dahulu jika masih diperlukan."))return;localStorage.removeItem("bm_cats");localStorage.removeItem("bm_tx");localStorage.removeItem("bm_receipts");cats=JSON.parse(JSON.stringify(defaults));tx=[];receipts=[];save();renderAll();newReceipt();alert("Data lokal telah dikosongkan.")}
 
-dashMonth.value=filterMonth.value=reportMonth.value=monthNow();analysisYear.value=new Date().getFullYear();tDate.value=new Date().toISOString().slice(0,16);nDate.value=today();nNumber.value=nextNo();loadCats();addItem();renderAll();if(!localStorage.getItem('bm_owner_pin')){pinMode='setup';pinConfirm.style.display='block';pinAction.textContent='Buat PIN';lockMessage.textContent='Buat PIN pemilik 4–6 angka untuk melindungi catatan keuangan.';}else{pinMode='unlock';pinConfirm.style.display='none';pinAction.textContent='Buka aplikasi';lockMessage.textContent='Masukkan PIN pemilik untuk membuka aplikasi.';}if("serviceWorker" in navigator && location.protocol!=="file:"){navigator.serviceWorker.register("./sw.js").catch(()=>{});}['nDate','nCustomer','nMemo'].forEach(id=>document.getElementById(id).addEventListener('input',renderReceiptPreview));
+initPinLock();
+try{
+ dashMonth.value=filterMonth.value=reportMonth.value=monthNow();
+ analysisYear.value=new Date().getFullYear();
+ tDate.value=localDateTime();
+ nDate.value=today();
+ nNumber.value=nextNo();
+ loadCats();addItem();renderAll();
+ ['nDate','nCustomer','nMemo'].forEach(id=>pinEl(id).addEventListener('input',renderReceiptPreview));
+}catch(initError){console.error('Inisialisasi menu BUDI MEDKIT:',initError);}
 </script></body></html>
