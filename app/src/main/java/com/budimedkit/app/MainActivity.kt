@@ -18,6 +18,9 @@ class MainActivity : Activity() {
     private val bg = Color.rgb(244, 247, 251)
     private val ink = Color.rgb(32, 43, 58)
     private val muted = Color.rgb(116, 128, 145)
+    private var incomeValue: TextView? = null
+    private var expenseValue: TextView? = null
+    private var balanceView: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,13 +78,14 @@ class MainActivity : Activity() {
         addThinDivider(finance)
         addMoneyRow(finance, "Total pengeluaran", keluar, orange)
         addThinDivider(finance)
-        finance.addView(TextView(this).apply {
+        balanceView = TextView(this).apply {
             text = "SALDO SAAT INI\n${rupiah(saldo)}"
             textSize = 18f
             setTextColor(navy)
             setTypeface(null, Typeface.BOLD)
             setPadding(0, dp(13), 0, dp(2))
-        })
+        }
+        finance.addView(balanceView)
         page.addView(finance, matchWrap())
 
         addSectionTitle(page, "Menu Utama", "Pilih layanan yang ingin dibuka")
@@ -120,6 +124,18 @@ class MainActivity : Activity() {
         setContentView(scroll)
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (incomeValue != null) {
+            val db = DatabaseHelper(this)
+            val masuk = db.totalTransaksi("PEMASUKAN")
+            val keluar = db.totalTransaksi("PENGELUARAN")
+            incomeValue?.text = rupiah(masuk)
+            expenseValue?.text = rupiah(keluar)
+            balanceView?.text = "SALDO SAAT INI\n${rupiah(masuk - keluar)}"
+        }
+    }
+
     private fun openModule(module: String) {
         startActivity(Intent(this, FeatureActivity::class.java).putExtra("module", module))
     }
@@ -155,13 +171,16 @@ class MainActivity : Activity() {
             textSize = 13f
             setTextColor(muted)
         }, LinearLayout.LayoutParams(0, -2, 1f))
-        row.addView(TextView(this).apply {
+        val amountView = TextView(this).apply {
             text = rupiah(amount)
             textSize = 15f
             setTextColor(color)
             setTypeface(null, Typeface.BOLD)
             gravity = Gravity.END
-        })
+        }
+        if (label == "Total pemasukan") incomeValue = amountView
+        if (label == "Total pengeluaran") expenseValue = amountView
+        row.addView(amountView)
         parent.addView(row)
     }
 
