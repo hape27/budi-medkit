@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
 class DatabaseHelper(context: Context) :
-    SQLiteOpenHelper(context, "BudiMedkit.db", null, 2) {
+    SQLiteOpenHelper(context, "BudiMedkit.db", null, 3) {
 
     override fun onCreate(db: SQLiteDatabase) {
         createTables(db)
@@ -26,6 +26,7 @@ class DatabaseHelper(context: Context) :
             CREATE TABLE IF NOT EXISTS kendaraan (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 pelanggan_id INTEGER,
+                pelanggan_nama TEXT,
                 merk TEXT,
                 nomor_polisi TEXT,
                 tipe TEXT
@@ -97,6 +98,9 @@ class DatabaseHelper(context: Context) :
                     jumlah REAL
                 )
             """)
+        }
+        if (oldVersion < 3) {
+            db.execSQL("ALTER TABLE kendaraan ADD COLUMN pelanggan_nama TEXT")
         }
     }
 
