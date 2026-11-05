@@ -31,7 +31,7 @@ class MainActivity : Activity() {
         val saldo = masuk - keluar
 
         val scroll = ScrollView(this).apply {
-            fillViewport = true
+            isFillViewport = true
             setBackgroundColor(bg)
         }
         val page = LinearLayout(this).apply {
