@@ -28,8 +28,8 @@ class FeatureActivity : Activity() {
     private val fields: List<FormField>
         get() = when (module) {
             "pelanggan" -> listOf(FormField("nama", "Nama pelanggan"), FormField("telepon", "Nomor telepon"), FormField("alamat", "Alamat"))
-            "kendaraan" -> listOf(FormField("pelanggan_id", "ID pelanggan (lihat Data Pelanggan)", true), FormField("merk", "Merek kendaraan"), FormField("nomor_polisi", "Nomor polisi"), FormField("tipe", "Tipe / model"))
-            "servis" -> listOf(FormField("pelanggan", "Nama pelanggan"), FormField("kendaraan", "Kendaraan / nomor polisi"), FormField("keluhan", "Keluhan / pekerjaan"), FormField("biaya", "Biaya servis", true), FormField("status", "Status (Masuk / Proses / Selesai)"))
+            "kendaraan" -> listOf(FormField("pelanggan_nama", "Nama pelanggan"), FormField("merk", "Merek kendaraan"), FormField("nomor_polisi", "Nomor polisi"), FormField("tipe", "Tipe / model"))
+            "servis" -> listOf(FormField("tanggal", "Tanggal (YYYY-MM-DD)"), FormField("pelanggan", "Nama pelanggan"), FormField("kendaraan", "Kendaraan / nomor polisi"), FormField("keluhan", "Keluhan / pekerjaan"), FormField("biaya", "Biaya servis", true), FormField("status", "Status (Masuk / Proses / Selesai)"))
             "sparepart" -> listOf(FormField("nama", "Nama sparepart"), FormField("stok", "Jumlah stok", true), FormField("harga", "Harga satuan", true))
             "mekanik" -> listOf(FormField("nama", "Nama mekanik"), FormField("telepon", "Nomor telepon"), FormField("keahlian", "Keahlian"))
             else -> listOf(FormField("tanggal", "Tanggal (YYYY-MM-DD)"), FormField("mekanik", "Nama mekanik"), FormField("keterangan", "Keterangan gaji"), FormField("jumlah", "Jumlah gaji", true))
