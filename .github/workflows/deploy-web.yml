@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - rebuild-finance-first
-    paths:
-      - 'web-preview/**'
-      - '.github/workflows/deploy-web.yml'
 permissions:
   contents: read
   pages: write
