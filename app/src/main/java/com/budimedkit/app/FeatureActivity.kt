@@ -63,23 +63,33 @@ class FeatureActivity : Activity() {
             setBackgroundColor(Color.rgb(244, 247, 251))
         }
         val header = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(dp(18), dp(18), dp(18), dp(18))
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            setPadding(dp(14), dp(15), dp(18), dp(15))
             background = gradient()
         }
         header.addView(TextView(this).apply {
+            text = "‹"
+            textSize = 34f
+            gravity = Gravity.CENTER
+            setTextColor(Color.WHITE)
+            setOnClickListener { finish() }
+        }, LinearLayout.LayoutParams(dp(42), dp(48)))
+        val heading = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+        heading.addView(TextView(this).apply {
             text = "BUDI MEDKIT"
-            textSize = 12f
+            textSize = 11f
             setTextColor(Color.rgb(218, 229, 244))
             setTypeface(null, Typeface.BOLD)
         })
-        header.addView(TextView(this).apply {
+        heading.addView(TextView(this).apply {
             text = title
-            textSize = 23f
+            textSize = 21f
             setTextColor(Color.WHITE)
             setTypeface(null, Typeface.BOLD)
-            setPadding(0, dp(5), 0, 0)
+            setPadding(0, dp(3), 0, 0)
         })
+        header.addView(heading)
         root.addView(header, LinearLayout.LayoutParams(-1, -2))
 
         val add = Button(this).apply {
@@ -216,14 +226,26 @@ class FeatureActivity : Activity() {
             setPadding(dp(18), dp(18), dp(18), dp(24))
             setBackgroundColor(Color.rgb(244, 247, 251))
         }
-        root.addView(TextView(this).apply {
-            text = "BUDI MEDKIT\nLAPORAN KEUANGAN"
-            textSize = 23f
+        val reportHeader = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            setPadding(dp(14), dp(15), dp(18), dp(15))
+            background = gradient()
+        }
+        reportHeader.addView(TextView(this).apply {
+            text = "‹"
+            textSize = 34f
+            gravity = Gravity.CENTER
+            setTextColor(Color.WHITE)
+            setOnClickListener { finish() }
+        }, LinearLayout.LayoutParams(dp(42), dp(48)))
+        reportHeader.addView(TextView(this).apply {
+            text = "BUDI MEDKIT\\nLAPORAN KEUANGAN"
+            textSize = 20f
             setTextColor(Color.WHITE)
             setTypeface(null, Typeface.BOLD)
-            setPadding(dp(20), dp(22), dp(20), dp(22))
-            background = gradient()
         })
+        root.addView(reportHeader)
         val masuk = db.totalTransaksi("PEMASUKAN")
         val keluar = db.totalTransaksi("PENGELUARAN")
         val saldo = masuk - keluar
