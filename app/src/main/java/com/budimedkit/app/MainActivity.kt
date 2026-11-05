@@ -101,7 +101,7 @@ class MainActivity : Activity() {
             MenuItem("💳", "Transaksi", red) { startActivity(Intent(this, TransaksiActivity::class.java)) },
             MenuItem("🧑‍🔧", "Data\nMekanik", navy) { openModule("mekanik") },
             MenuItem("💰", "Gaji\nMekanik", Color.rgb(22, 133, 83)) { openModule("gaji") },
-            MenuItem("📊", "Laporan\nKeuangan", Color.rgb(103, 57, 166)) { openModule("laporan") }
+            MenuItem("📊", "Laporan\nKeuangan", Color.rgb(103, 57, 166)) { openModule("laporan") },
         )
 
         for (rowIndex in 0 until 3) {
