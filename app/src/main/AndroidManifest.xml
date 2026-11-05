@@ -3,7 +3,8 @@
     <application
         android:allowBackup="true"
         android:label="BUDI MEDKIT"
-        android:icon="@drawable/budi_jaya_motor_logo"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:usesCleartextTraffic="false"
         android:theme="@android:style/Theme.Material.Light.NoActionBar">
