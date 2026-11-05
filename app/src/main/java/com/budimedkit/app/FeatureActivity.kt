@@ -217,7 +217,7 @@ class FeatureActivity : Activity() {
             setBackgroundColor(Color.rgb(244, 247, 251))
         }
         root.addView(TextView(this).apply {
-            text = "BUDI MEDKIT\\nLAPORAN KEUANGAN"
+            text = "BUDI MEDKIT\nLAPORAN KEUANGAN"
             textSize = 23f
             setTextColor(Color.WHITE)
             setTypeface(null, Typeface.BOLD)
