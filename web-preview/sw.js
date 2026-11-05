@@ -1,5 +1,5 @@
 const CACHE_NAME = "budi-medkit-local-v1";
-const CORE = ["./", "./index.html", "./manifest.webmanifest"];
+const CORE = ["./", "./index.html", "./manifest.webmanifest", "../app/src/main/res/drawable/budi_jaya_motor_logo.jpg"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));
 });
