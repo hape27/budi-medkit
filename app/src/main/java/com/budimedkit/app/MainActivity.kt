@@ -88,12 +88,27 @@ class MainActivity : Activity() {
         addMenuCard(page, "💳", "Transaksi", "Pemasukan dan pengeluaran", true) {
             startActivity(Intent(this, TransaksiActivity::class.java))
         }
-        addMenuCard(page, "🔧", "Servis Kendaraan", "Pencatatan pekerjaan servis", false)
-        addMenuCard(page, "👥", "Data Pelanggan", "Kelola informasi pelanggan", false)
-        addMenuCard(page, "🏍", "Data Kendaraan", "Data motor dan kendaraan", false)
-        addMenuCard(page, "🧰", "Stok Sparepart", "Persediaan suku cadang", false)
-        addMenuCard(page, "👨‍🔧", "Gaji Mekanik", "Catatan upah mekanik", false)
-        addMenuCard(page, "📊", "Laporan Keuangan", "Rekap transaksi bengkel", false)
+        addMenuCard(page, "🔧", "Servis Kendaraan", "Pencatatan pekerjaan servis", true) {
+            openModule("servis")
+        }
+        addMenuCard(page, "👥", "Data Pelanggan", "Kelola informasi pelanggan", true) {
+            openModule("pelanggan")
+        }
+        addMenuCard(page, "🏍", "Data Kendaraan", "Data motor dan kendaraan", true) {
+            openModule("kendaraan")
+        }
+        addMenuCard(page, "🧰", "Stok Sparepart", "Persediaan suku cadang", true) {
+            openModule("sparepart")
+        }
+        addMenuCard(page, "🧑‍🔧", "Data Mekanik", "Kelola data mekanik", true) {
+            openModule("mekanik")
+        }
+        addMenuCard(page, "👨‍🔧", "Gaji Mekanik", "Catatan upah mekanik", true) {
+            openModule("gaji")
+        }
+        addMenuCard(page, "📊", "Laporan Keuangan", "Rekap transaksi bengkel", true) {
+            openModule("laporan")
+        }
 
         page.addView(TextView(this).apply {
             text = "BUDI MEDKIT  •  BUDI JAYA MOTOR"
@@ -103,6 +118,10 @@ class MainActivity : Activity() {
             setPadding(0, dp(22), 0, 0)
         })
         setContentView(scroll)
+    }
+
+    private fun openModule(module: String) {
+        startActivity(Intent(this, FeatureActivity::class.java).putExtra("module", module))
     }
 
     private fun addSectionTitle(parent: LinearLayout, title: String, subtitle: String) {
