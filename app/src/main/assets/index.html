@@ -32,14 +32,15 @@ let cats=JSON.parse(localStorage.getItem('bm_cats')||'null')||defaults;
 let tx=JSON.parse(localStorage.getItem('bm_tx')||'[]'), receipts=JSON.parse(localStorage.getItem('bm_receipts')||'[]'), items=[];
 const rupiah=n=>'Rp'+Number(n||0).toLocaleString('id-ID');
 const today=()=>{let d=new Date();return new Date(d-d.getTimezoneOffset()*60000).toISOString().slice(0,10)};
+const localDateTime=()=>{let d=new Date(),p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes())};
 const monthNow=()=>today().slice(0,7);
 function save(){localStorage.setItem('bm_cats',JSON.stringify(cats));localStorage.setItem('bm_tx',JSON.stringify(tx));localStorage.setItem('bm_receipts',JSON.stringify(receipts))}
 function show(id){document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===id));document.getElementById('topTitle').textContent=document.querySelector('[data-page="'+id+'"]').textContent.trim();renderAll()}
 document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>show(b.dataset.page));
 function loadCats(){let type=document.getElementById('tType').value;document.getElementById('tCat').innerHTML=cats[type].map(c=>'<option>'+esc(c)+'</option>').join('')}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function saveTransaction(){let type=tType.value,amount=Number(tAmount.value);if(!amount||amount<1||!tCat.value){alert('Isi kategori dan nominal transaksi.');return}tx.unshift({id:crypto.randomUUID(),date:tDate.value||new Date().toISOString(),type,cat:tCat.value,amount,note:tNote.value,source:'manual'});save();resetTrans();renderAll();alert('Transaksi tersimpan.')}
-function resetTrans(){tAmount.value='';tNote.value='';tDate.value=new Date().toISOString().slice(0,16)}
+function saveTransaction(){let type=tType.value,amount=Number(tAmount.value);if(!amount||amount<1||!tCat.value){alert('Isi kategori dan nominal transaksi.');return}tx.unshift({id:crypto.randomUUID(),date:tDate.value||localDateTime(),type,cat:tCat.value,amount,note:tNote.value,source:'manual'});save();resetTrans();renderAll();alert('Transaksi tersimpan.')}
+function resetTrans(){tAmount.value='';tNote.value='';tDate.value=localDateTime()}
 function addCategory(){let type=cType.value,name=cName.value.trim();if(!name)return;if(cats[type].some(x=>x.toLowerCase()===name.toLowerCase()))return alert('Kategori sudah ada.');cats[type].push(name);cName.value='';save();renderCats();loadCats()}
 function renderCats(){incomeCats.innerHTML=cats.masuk.map(c=>catHtml(c,'masuk')).join('');expenseCats.innerHTML=cats.keluar.map(c=>catHtml(c,'keluar')).join('')}
 function catHtml(c,t){return '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid #eee"><span>'+esc(c)+'</span><span><button class="btn secondary" onclick="renameCat('+JSON.stringify(c)+','+JSON.stringify(t)+')">Ubah</button> <button class="btn danger" onclick="removeCat('+JSON.stringify(c)+','+JSON.stringify(t)+')">Hapus</button></span></div>'}
