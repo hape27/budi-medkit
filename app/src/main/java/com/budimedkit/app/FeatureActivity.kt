@@ -52,6 +52,10 @@ class FeatureActivity : Activity() {
         super.onCreate(savedInstanceState)
         db = DatabaseHelper(this)
         module = intent.getStringExtra("module") ?: "pelanggan"
+        if (module == "laporan") {
+            showReport()
+            return
+        }
 
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -206,6 +210,70 @@ class FeatureActivity : Activity() {
             .show()
     }
 
+    private fun showReport() {
+        val root = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(dp(18), dp(18), dp(18), dp(24))
+            setBackgroundColor(Color.rgb(244, 247, 251))
+        }
+        root.addView(TextView(this).apply {
+            text = "BUDI MEDKIT\\nLAPORAN KEUANGAN"
+            textSize = 23f
+            setTextColor(Color.WHITE)
+            setTypeface(null, Typeface.BOLD)
+            setPadding(dp(20), dp(22), dp(20), dp(22))
+            background = gradient()
+        })
+        val masuk = db.totalTransaksi("PEMASUKAN")
+        val keluar = db.totalTransaksi("PENGELUARAN")
+        val saldo = masuk - keluar
+        val box = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(dp(18), dp(18), dp(18), dp(18))
+            background = rounded(Color.WHITE, 18)
+        }
+        val reportText = """
+            TOTAL PEMASUKAN
+            ${money(masuk)}
+
+            TOTAL PENGELUARAN
+            ${money(keluar)}
+
+            SALDO AKHIR
+            ${money(saldo)}
+
+            JUMLAH PELANGGAN
+            ${db.jumlahBaris("pelanggan")}
+
+            JUMLAH KENDARAAN
+            ${db.jumlahBaris("kendaraan")}
+
+            JUMLAH SERVIS TERCATAT
+            ${db.jumlahBaris("servis")}
+
+            JUMLAH SPAREPART
+            ${db.jumlahBaris("sparepart")}
+
+            JUMLAH MEKANIK
+            ${db.jumlahBaris("mekanik")}
+        """.trimIndent()
+        box.addView(TextView(this).apply {
+            text = reportText
+            textSize = 16f
+            setTextColor(ink)
+            setLineSpacing(dp(4).toFloat(), 1f)
+        })
+        val params = LinearLayout.LayoutParams(-1, -2)
+        params.topMargin = dp(18)
+        root.addView(box, params)
+        root.addView(Button(this).apply {
+            text = "PERBARUI LAPORAN"
+            setOnClickListener { recreate() }
+        })
+        setContentView(root)
+    }
+
+    private fun money(value: Double) = "Rp " + String.format("%,.0f", value).replace(',', '.')
     private fun today() = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
     private fun dp(v: Int) = (v * resources.displayMetrics.density).toInt()
     private fun rounded(color: Int, radius: Int) = GradientDrawable().apply {
