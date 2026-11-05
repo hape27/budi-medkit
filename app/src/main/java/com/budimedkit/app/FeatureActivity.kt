@@ -246,53 +246,125 @@ class FeatureActivity : Activity() {
             setTypeface(null, Typeface.BOLD)
         })
         root.addView(reportHeader)
-        val masuk = db.totalTransaksi("PEMASUKAN")
-        val keluar = db.totalTransaksi("PENGELUARAN")
-        val saldo = masuk - keluar
-        val box = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(dp(18), dp(18), dp(18), dp(18))
-            background = rounded(Color.WHITE, 18)
+
+        val monthKeys = mutableListOf<String>()
+        val monthLabels = mutableListOf<String>()
+        val cal = java.util.Calendar.getInstance()
+        val monthFormat = SimpleDateFormat("MMMM yyyy", Locale("id", "ID"))
+        val keyFormat = SimpleDateFormat("yyyy-MM", Locale.getDefault())
+        for (i in 0 until 24) {
+            monthKeys.add(keyFormat.format(cal.time))
+            monthLabels.add(monthFormat.format(cal.time))
+            cal.add(java.util.Calendar.MONTH, -1)
         }
-        val reportText = """
-            TOTAL PEMASUKAN
-            ${money(masuk)}
 
-            TOTAL PENGELUARAN
-            ${money(keluar)}
+        val filter = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(dp(14), dp(12), dp(14), dp(12))
+            background = rounded(Color.WHITE, 16)
+        }
+        filter.addView(TextView(this).apply {
+            text = "Pilih bulan laporan"
+            textSize = 14f
+            setTextColor(navy)
+            setTypeface(null, Typeface.BOLD)
+        })
+        val monthSpinner = Spinner(this).apply {
+            adapter = ArrayAdapter(this@FeatureActivity, android.R.layout.simple_spinner_dropdown_item, monthLabels)
+        }
+        filter.addView(monthSpinner, LinearLayout.LayoutParams(-1, dp(48)))
+        root.addView(filter, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(14) })
 
-            SALDO AKHIR
-            ${money(saldo)}
-
-            JUMLAH PELANGGAN
-            ${db.jumlahBaris("pelanggan")}
-
-            JUMLAH KENDARAAN
-            ${db.jumlahBaris("kendaraan")}
-
-            JUMLAH SERVIS TERCATAT
-            ${db.jumlahBaris("servis")}
-
-            JUMLAH SPAREPART
-            ${db.jumlahBaris("sparepart")}
-
-            JUMLAH MEKANIK
-            ${db.jumlahBaris("mekanik")}
-        """.trimIndent()
-        box.addView(TextView(this).apply {
-            text = reportText
-            textSize = 16f
+        val summary = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(dp(16), dp(16), dp(16), dp(16))
+            background = rounded(Color.WHITE, 16)
+        }
+        val summaryText = TextView(this).apply {
+            textSize = 15f
             setTextColor(ink)
-            setLineSpacing(dp(4).toFloat(), 1f)
-        })
-        val params = LinearLayout.LayoutParams(-1, -2)
-        params.topMargin = dp(18)
-        root.addView(box, params)
-        root.addView(Button(this).apply {
-            text = "PERBARUI LAPORAN"
-            setOnClickListener { recreate() }
-        })
+            setLineSpacing(dp(5).toFloat(), 1f)
+        }
+        summary.addView(summaryText)
+        root.addView(summary, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(12) })
+
+        val listTitle = TextView(this).apply {
+            text = "RINCIAN TRANSAKSI BULAN INI"
+            textSize = 14f
+            setTextColor(navy)
+            setTypeface(null, Typeface.BOLD)
+            setPadding(dp(2), dp(18), dp(2), dp(8))
+        }
+        root.addView(listTitle)
+        val scroll = ScrollView(this)
+        val rows = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+        scroll.addView(rows)
+        root.addView(scroll, LinearLayout.LayoutParams(-1, 0, 1f))
+
+        fun loadMonth(position: Int) {
+            val monthKey = monthKeys[position]
+            val cursor = db.readableDatabase.rawQuery(
+                "SELECT tanggal, jenis, keterangan, jumlah FROM transaksi WHERE tanggal LIKE ? ORDER BY tanggal DESC, id DESC",
+                arrayOf("$monthKey%")
+            )
+            var masuk = 0.0
+            var keluar = 0.0
+            rows.removeAllViews()
+            if (cursor.count == 0) {
+                rows.addView(TextView(this).apply {
+                    text = "Belum ada transaksi pada bulan ${monthLabels[position]}."
+                    textSize = 14f
+                    setTextColor(muted)
+                    gravity = Gravity.CENTER
+                    setPadding(dp(18), dp(28), dp(18), dp(28))
+                    background = rounded(Color.WHITE, 14)
+                })
+            } else {
+                while (cursor.moveToNext()) {
+                    val tanggal = cursor.getString(0) ?: "-"
+                    val jenis = cursor.getString(1) ?: "-"
+                    val catatan = cursor.getString(2) ?: "-"
+                    val nominal = cursor.getDouble(3)
+                    if (jenis.equals("PEMASUKAN", true)) masuk += nominal else keluar += nominal
+                    val warna = if (jenis.equals("PEMASUKAN", true)) Color.rgb(28, 132, 78) else Color.rgb(190, 55, 55)
+                    val card = LinearLayout(this).apply {
+                        orientation = LinearLayout.VERTICAL
+                        setPadding(dp(14), dp(12), dp(14), dp(12))
+                        background = rounded(Color.WHITE, 14)
+                    }
+                    card.addView(TextView(this).apply {
+                        text = "$tanggal  •  $jenis"
+                        textSize = 12f
+                        setTextColor(warna)
+                        setTypeface(null, Typeface.BOLD)
+                    })
+                    card.addView(TextView(this).apply {
+                        text = catatan
+                        textSize = 14f
+                        setTextColor(ink)
+                        setPadding(0, dp(5), 0, dp(5))
+                    })
+                    card.addView(TextView(this).apply {
+                        text = money(nominal)
+                        textSize = 15f
+                        setTextColor(warna)
+                        setTypeface(null, Typeface.BOLD)
+                    })
+                    rows.addView(card, LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = dp(8) })
+                }
+            }
+            cursor.close()
+            summaryText.text = "PEMASUKAN\\n${money(masuk)}\\n\\nPENGELUARAN\\n${money(keluar)}\\n\\nSALDO BULAN INI\\n${money(masuk - keluar)}"
+            listTitle.text = "RINCIAN TRANSAKSI • ${monthLabels[position].uppercase(Locale("id", "ID"))}"
+        }
+        monthSpinner.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
+            override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
+                loadMonth(position)
+            }
+        }
         setContentView(root)
+        loadMonth(0)
     }
 
     private fun money(value: Double) = "Rp " + String.format("%,.0f", value).replace(',', '.')
