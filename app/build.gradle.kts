@@ -12,7 +12,7 @@ android {
         applicationId = "com.budimedkit.app"
         minSdk = 23
         targetSdk = 35
-        versionCode = 4
+        versionCode = 5
         versionName = "2.0"
     }
 
