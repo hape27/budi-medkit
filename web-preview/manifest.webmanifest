@@ -1,0 +1,11 @@
+{
+  "name": "BUDI MEDKIT",
+  "short_name": "BUDI MEDKIT",
+  "description": "Pencatatan pemasukan, pengeluaran, analisis keuangan, laporan bulanan, dan nota Budi Jaya Motor.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f6fa",
+  "theme_color": "#10243a",
+  "lang": "id"
+}
