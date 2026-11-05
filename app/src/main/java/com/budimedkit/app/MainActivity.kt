@@ -30,6 +30,7 @@ class MainActivity : Activity() {
         val keluar = db.totalTransaksi("PENGELUARAN")
         val saldo = masuk - keluar
 
+        val shell = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setBackgroundColor(bg) }
         val scroll = ScrollView(this).apply {
             isFillViewport = true
             setBackgroundColor(bg)
@@ -76,7 +77,7 @@ class MainActivity : Activity() {
         }
         addMoneyRow(finance, "Total pemasukan", masuk, Color.rgb(27, 145, 105))
         addThinDivider(finance)
-        addMoneyRow(finance, "Total pengeluaran", keluar, orange)
+        addMoneyRow(finance, "Total pengeluaran", keluar, Color.rgb(205, 72, 72))
         addThinDivider(finance)
         balanceView = TextView(this).apply {
             text = "SALDO SAAT INI\n${rupiah(saldo)}"
@@ -121,7 +122,30 @@ class MainActivity : Activity() {
             setTextColor(muted)
             setPadding(0, dp(22), 0, 0)
         })
-        setContentView(scroll)
+        val nav = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER
+            setPadding(dp(8), dp(5), dp(8), dp(5))
+            setBackgroundColor(Color.WHITE)
+            elevation = dp(8).toFloat()
+        }
+        fun navItem(symbol: String, label: String, action: () -> Unit) {
+            val item = LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL
+                gravity = Gravity.CENTER
+                isClickable = true
+                isFocusable = true
+                setOnClickListener { action() }
+            }
+            item.addView(TextView(this).apply { text = symbol; textSize = 21f; gravity = Gravity.CENTER; setTextColor(orange) })
+            item.addView(TextView(this).apply { text = label; textSize = 10f; gravity = Gravity.CENTER; setTextColor(navy) })
+            nav.addView(item, LinearLayout.LayoutParams(0, -1, 1f))
+        }
+        navItem("⌂", "Beranda") { }
+        navItem("＋", "Transaksi") { startActivity(Intent(this, TransaksiActivity::class.java)) }
+        navItem("▤", "Laporan") { openModule("laporan") }
+        shell.addView(nav, LinearLayout.LayoutParams(-1, dp(62)))
+        setContentView(shell)
     }
 
     override fun onResume() {
