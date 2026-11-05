@@ -46,6 +46,12 @@ class MainActivity : Activity() {
             setPadding(dp(22), dp(22), dp(22), dp(24))
             background = roundedGradient(navy, blue, 24)
         }
+        val logo = ImageView(this).apply {
+            setImageResource(R.drawable.budi_jaya_motor_logo)
+            scaleType = ImageView.ScaleType.FIT_CENTER
+            contentDescription = "Logo asli Budi Jaya Motor"
+        }
+        header.addView(logo, LinearLayout.LayoutParams(dp(132), dp(82)))
         header.addView(TextView(this).apply {
             text = "BUDI JAYA MOTOR"
             textSize = 12f
