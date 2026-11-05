@@ -3,11 +3,10 @@ package com.budimedkit.app
 
 import android.app.Activity
 import android.os.Bundle
+import android.content.Intent
 import android.graphics.Color
 import android.view.Gravity
-import android.widget.LinearLayout
-import android.widget.ScrollView
-import android.widget.TextView
+import android.widget.*
 
 class MainActivity : Activity() {
 
@@ -26,49 +25,39 @@ class MainActivity : Activity() {
         scroll.addView(layout)
 
         val header = TextView(this)
-        header.text = "BUDI JAYA MOTOR\nBUDI MEDKIT"
-        header.textSize = 25f
+        header.text = "BUDI JAYA MOTOR\nBUDI MEDKIT\nManajemen Bengkel"
+        header.textSize = 24f
         header.setTextColor(Color.WHITE)
         header.setTypeface(null, 1)
-        header.setPadding(20, 25, 20, 25)
+        header.gravity = Gravity.CENTER
+        header.setPadding(20, 30, 20, 30)
         header.setBackgroundColor(navy)
         layout.addView(header)
 
-        addTitle(layout, "Ringkasan Keuangan")
+        addTitle(layout, "MENU UTAMA")
 
-        addCard(layout, "Saldo Kas", "Rp 0", green)
-        addCard(layout, "Total Pemasukan", "Rp 0", navy)
-        addCard(layout, "Total Pengeluaran", "Rp 0", Color.RED)
-        addCard(layout, "Laba Bersih", "Rp 0", green)
-
-        addTitle(layout, "Menu Utama")
-
-        val menus = arrayOf(
-            "Transaksi Pemasukan",
-            "Transaksi Pengeluaran",
-            "Servis Kendaraan",
-            "Data Pelanggan",
-            "Data Kendaraan",
-            "Stok Sparepart",
-            "Gaji Mekanik",
-            "Laporan Keuangan"
-        )
-
-        for (menu in menus) {
-            val item = TextView(this)
-            item.text = "▸  $menu"
-            item.textSize = 17f
-            item.setTextColor(navy)
-            item.setPadding(18, 20, 18, 20)
-            item.setBackgroundColor(Color.WHITE)
-
-            val params = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
+        addMenu(layout, "Transaksi Pemasukan & Pengeluaran") {
+            startActivity(
+                Intent(this, TransaksiActivity::class.java)
             )
-            params.setMargins(0, 5, 0, 5)
-            layout.addView(item, params)
         }
+
+        addMenu(layout, "Servis Kendaraan")
+        addMenu(layout, "Data Pelanggan")
+        addMenu(layout, "Data Kendaraan")
+        addMenu(layout, "Stok Sparepart")
+        addMenu(layout, "Gaji Mekanik")
+        addMenu(layout, "Laporan Keuangan")
+
+        addTitle(layout, "Informasi Aplikasi")
+
+        val info = TextView(this)
+        info.text = "BUDI MEDKIT\nSistem Manajemen Bengkel BUDI JAYA MOTOR"
+        info.textSize = 15f
+        info.setTextColor(navy)
+        info.gravity = Gravity.CENTER
+        info.setPadding(15, 25, 15, 25)
+        layout.addView(info)
 
         setContentView(scroll)
     }
@@ -79,40 +68,36 @@ class MainActivity : Activity() {
         title.textSize = 19f
         title.setTextColor(navy)
         title.setTypeface(null, 1)
-        title.setPadding(0, 25, 0, 12)
+        title.setPadding(0, 25, 0, 15)
         layout.addView(title)
     }
 
-    private fun addCard(
+    private fun addMenu(
         layout: LinearLayout,
-        title: String,
-        value: String,
-        color: Int
+        text: String,
+        action: (() -> Unit)? = null
     ) {
-        val card = LinearLayout(this)
-        card.orientation = LinearLayout.VERTICAL
-        card.setPadding(20, 18, 20, 18)
-        card.setBackgroundColor(Color.WHITE)
+        val button = Button(this)
+        button.text = text
+        button.textSize = 15f
+        button.setOnClickListener {
+            if (action != null) {
+                action()
+            } else {
+                Toast.makeText(
+                    this,
+                    "$text belum tersedia",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
 
-        val label = TextView(this)
-        label.text = title
-        label.textSize = 15f
-        label.setTextColor(Color.DKGRAY)
-
-        val amount = TextView(this)
-        amount.text = value
-        amount.textSize = 24f
-        amount.setTextColor(color)
-        amount.setTypeface(null, 1)
-
-        card.addView(label)
-        card.addView(amount)
-
-        val params = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
+        layout.addView(
+            button,
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
         )
-        params.setMargins(0, 5, 0, 5)
-        layout.addView(card, params)
     }
 }
