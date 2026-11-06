@@ -68,6 +68,63 @@ html,body{width:100%;max-width:100%;overflow-x:hidden}
   #menuToggle{display:none!important}
   .menu-backdrop{display:none!important}
 }
+
+/* Identitas visual BUDI MEDKIT — tema merah, hitam, putih */
+:root{--navy:#101722;--blue:#1769e8;--bg:#f4f6fb;--muted:#748094;--line:#e5e9f0;--green:#0c9b58;--red:#e50920}
+body{background:var(--bg);color:#172033;font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+.side{background:linear-gradient(180deg,#111923 0%,#080d14 100%);color:#fff}
+.brand{padding-bottom:26px}
+.brand img{width:48px;height:48px;border-radius:12px;box-shadow:0 3px 12px #0005}
+.brand b{font-size:17px}
+.nav button{min-height:48px;border-radius:12px;color:#dce3ed;padding:13px 14px;margin:5px 0;transition:background .18s ease}
+.nav button.active,.nav button:hover{background:linear-gradient(100deg,#ed1028,#bd071b);color:#fff;box-shadow:0 5px 16px #e509202e}
+.top{background:linear-gradient(100deg,#d90920,#f0182e);color:#fff;border:0}
+.top small{color:#ffe0e4}
+.top strong{font-size:17px}
+.content{max-width:1180px}
+#dashboard>h1{background:linear-gradient(110deg,#d90920,#f12b3c);color:#fff;padding:20px 20px 5px;margin:0;border-radius:16px 16px 0 0}
+#dashboard>.sub{background:linear-gradient(110deg,#d90920,#f12b3c);color:#ffe3e6;padding:0 20px 20px;margin:0 0 16px;border-radius:0 0 16px 16px}
+.card,.panel{border:1px solid #e6eaf1;border-radius:16px;box-shadow:0 5px 18px rgba(22,34,52,.045)}
+.metric{position:relative;min-height:112px;padding:18px 20px;overflow:hidden}
+.metric:after{content:"";position:absolute;width:92px;height:92px;border-radius:50%;right:-25px;top:-28px;background:rgba(255,255,255,.13)}
+.metric small{color:rgba(255,255,255,.88);font-size:13px;font-weight:600}
+.metric strong{color:#fff;font-size:clamp(21px,3vw,27px);margin-top:8px;overflow-wrap:anywhere}
+.metric:nth-child(1){background:linear-gradient(135deg,#1769e8,#0753c9);border:0}
+.metric:nth-child(2){background:linear-gradient(135deg,#0bb36a,#078b50);border:0}
+.metric:nth-child(3){background:linear-gradient(135deg,#7040d5,#5127ac);border:0}
+h1{letter-spacing:-.45px}
+h2{font-weight:750;letter-spacing:-.2px}
+.btn{background:linear-gradient(100deg,#e50920,#c90019);border-radius:11px;padding:11px 16px;box-shadow:0 3px 9px rgba(229,9,32,.15)}
+.btn:hover{filter:brightness(1.06)}
+.btn.secondary{background:#edf1f7;color:#26354a;box-shadow:none}
+.btn.danger{background:#fff0f1;color:#c6001a;box-shadow:none}
+input,select,textarea{border-radius:11px;border-color:#dce3ed;min-height:43px}
+label{font-size:13px;color:#39485c}
+.panel h2{color:#172033}
+.tablewrap{border-radius:10px}
+th{background:#f3f5f9}
+.pill{font-weight:700}
+#menuToggle{border:0}
+@media(max-width:760px){
+  .top{background:linear-gradient(100deg,#d90920,#f0182e);height:58px;padding:0 12px}
+  #menuToggle{background:rgba(255,255,255,.16)!important;color:#fff!important;border:1px solid rgba(255,255,255,.25)!important}
+  .content{padding:14px 12px 24px}
+  #dashboard>h1{padding:18px 16px 4px;font-size:22px}
+  #dashboard>.sub{padding:0 16px 17px;font-size:13px}
+  #dashboard .toolbar{display:grid;grid-template-columns:minmax(0,1fr);width:100%}
+  #dashboard .toolbar input,#dashboard .toolbar button{width:100%;max-width:none!important}
+  .cards{grid-template-columns:minmax(0,1fr);gap:10px}
+  .metric{min-height:98px;padding:15px 17px}
+  .panel{padding:14px}
+  .side{background:linear-gradient(180deg,#111923 0%,#080d14 100%)}
+  .brand{padding:6px 8px 22px}
+  .nav button.active{background:linear-gradient(100deg,#ed1028,#bd071b)}
+  .toolbar .btn{min-height:46px}
+  .formgrid .full{min-width:0}
+  .formgrid>div{min-width:0}
+  .formgrid input,.formgrid select{min-width:0}
+  .receipt{box-shadow:none}
+}
 @media print{*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}body{background:#fff!important}.side,.top,.no-print{display:none!important}.content{padding:0}.page{display:none!important}#nota.page.active{display:block!important}.receipt{border:0;background:#fff!important;color:#182638!important}.receipt img{display:block!important;visibility:visible!important;opacity:1!important;filter:none!important;-webkit-filter:none!important;mix-blend-mode:normal!important;object-fit:contain!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}}
 </style></head>
 <body><div id="lockScreen"><img id="loginArtwork" src="login-final.png" alt="BUDI MEDKIT — Budi Jaya Motor"><div class="loginOverlay"><div class="pinCard"><div class="pinHeading"><span class="pinLockIcon" aria-hidden="true">🔒</span><p id="lockMessage">Masukkan PIN pemilik untuk membuka aplikasi.</p></div><input id="pinInput" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="Masukkan PIN 4–6 angka" autocomplete="off" aria-label="PIN pemilik"><input id="pinConfirm" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="Ulangi PIN untuk konfirmasi" autocomplete="off" aria-label="Konfirmasi PIN"><button class="btn" id="pinAction" type="button" onclick="handlePin()" aria-label="Login">LOGIN</button><button class="btn" id="resetPinAction" type="button" onclick="resetPinOnly()" aria-label="Reset PIN">LUPA PIN? RESET PIN DI SINI</button><small id="pinError" aria-live="polite"></small></div></div></div><div class="app">
